@@ -39,15 +39,21 @@ export default function FetchReposData(params, page) {
   const [state, dispactch] = useReducer(reducer,{repos: [], loading:true})
 
   useEffect(() => {
+    const cancelToken1 = axios.CancelToken.source()
     dispactch({ type: ACTIONS.MAKE_REQUEST });
     axios
-      .get(baseUrl + "/repos", { params: { page: page, ...params } })
+      .get(baseUrl + "/repos", {
+        cancelToken: cancelToken1.token,  
+        params: { page: page, ...params } })
       .then((res) => {
         dispactch({ type: ACTIONS.GET_DATA, payload: { repos: res.data } });
       })
       .catch((e) => {
-        dispactch({ type: ACTIONS.ERROR, payload: { error: e} });
+          if(axios.isCancel(e))
+      return dispactch({ type: ACTIONS.ERROR, payload: { error: e} });
       });
+
+      return () => {cancelToken1.cancel()}
   }, [params, page]);
 
   return state;

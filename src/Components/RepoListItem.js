@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Badge, Button, Card, Collapse } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faStar } from '@fortawesome/free-solid-svg-icons'
+import {  faEye, faStar } from '@fortawesome/free-solid-svg-icons'
 
 export default function RepoLisItem({repo}) {
  
@@ -17,13 +17,13 @@ export default function RepoLisItem({repo}) {
           {repo.license? repo.license.name:null}
         </Card.Subtitle>
         <Badge variant="secondary" className="mr-2 px-2">{repo.stargazers_count} <FontAwesomeIcon icon={faStar} /></Badge>
-        <Badge  variant="secondary" className="mr-2 px-2">{repo.watchers_count} {repo.watchers_count === 1? "Watcher": "Watchers"}</Badge>
+        <Badge  variant="secondary" className="mr-2 px-2">{repo.watchers_count} <FontAwesomeIcon icon={faEye} /> </Badge>
         <Card.Text className="mt-2 ">
         {repo.description}
 
         </Card.Text>
         </div>
-        <Card.Text ClassName="text-muted">
+        <Card.Text className="text-muted">
         {repo.fork?"Forked": "Not forked"}
         </Card.Text>
         

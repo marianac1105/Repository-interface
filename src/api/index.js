@@ -52,7 +52,7 @@ export default function FetchReposData(params, page) {
     axios
       .get(baseUrl + "/repos", {
         cancelToken: cancelToken1.token,  
-        params: { per_page:20, page: page, ...params } })
+        params: {direction:"desc", sort:"updated", per_page:20, page: page, ...params } })
       .then((res) => {
         dispactch({ type: ACTIONS.GET_DATA, payload: { repos: res.data } });
       })
@@ -65,7 +65,7 @@ export default function FetchReposData(params, page) {
       axios
       .get(baseUrl + "/repos", {
         cancelToken: cancelToken2.token,  
-        params: {per_page:20, page: page + 1, ...params } })
+        params: {direction:"desc", sort:"updated", per_page:20, page: page + 1, ...params } })
       .then((res) => {
         dispactch({ type: ACTIONS.UPDATE_HAS_NEXT_PAGE, payload: { hasNextPage: res.data.length !== 0 } });
       })

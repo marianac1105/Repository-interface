@@ -3,6 +3,7 @@ import FetchReposData from "./api/index.js"
 import {Container} from "react-bootstrap"
 import RepoListItem from "./Components/RepoListItem"
 import ReposPagination from "./Components/ReposPagination"
+import SortForm from "./Components/SortingForm"
 
 function App() {
 
@@ -10,9 +11,25 @@ function App() {
   const [page, setPage] = useState(1)
 
   const {repos, loading, error, hasNextPage} = FetchReposData(params, page)
+
+  function handleParamChange(e) {
+    const param = e.target.name
+    const value = e.target.value
+  
+    setPage(1)
+    setParams(prevParams => {
+      return { ...prevParams, [param]: value, }
+    })
+    
+  }
   
   return (
    <Container className="my-4">
+   <SortForm 
+     param = {params}
+     onParamChange = {handleParamChange}
+
+   />
    <ReposPagination
      page = {page}
      setPage = {setPage}
@@ -25,7 +42,13 @@ function App() {
          key = {repo.id}
          repo = {repo}
        />
+       
      })}
+     <ReposPagination
+     page = {page}
+     setPage = {setPage}
+     hasNextPage ={hasNextPage}
+   />
 
    </Container>
   );

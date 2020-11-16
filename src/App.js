@@ -6,10 +6,10 @@ import ReposPagination from "./Components/ReposPagination"
 
 function App() {
 
-  // const [params, setParams] = useState({})
+  const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
 
-  const {repos, loading, error, hasNextPage} = FetchReposData()
+  const {repos, loading, error, hasNextPage} = FetchReposData(params, page)
   
   return (
    <Container className="my-4">

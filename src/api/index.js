@@ -28,12 +28,12 @@ function reducer(state, action) {
         error: action.payload.error,
         repos: [],
       };
-      // case ACTIONS.UPDATE_HAS_NEXT_PAGE:
-      //   return {
-      //     ...state,
-      //     hasNextPage: action.payload.hasNextPage,
+      case ACTIONS.UPDATE_HAS_NEXT_PAGE:
+        return {
+          ...state,
+          hasNextPage: action.payload.hasNextPage,
          
-      //   };
+        };
         
       
 
@@ -52,7 +52,7 @@ export default function FetchReposData(params, page) {
     axios
       .get(baseUrl + "/repos", {
         cancelToken: cancelToken1.token,  
-        params: { page: page, ...params } })
+        params: { per_page:20, page: page, ...params } })
       .then((res) => {
         dispactch({ type: ACTIONS.GET_DATA, payload: { repos: res.data } });
       })
@@ -61,21 +61,21 @@ export default function FetchReposData(params, page) {
       return dispactch({ type: ACTIONS.ERROR, payload: { error: e} });
       });
 
-      // const cancelToken2 = axios.CancelToken.source()
-      // axios
-      // .get(baseUrl + "/repos", {
-      //   cancelToken: cancelToken2.token,  
-      //   params: { page: page + 1, ...params } })
-      // .then((res) => {
-      //   dispactch({ type: ACTIONS.GET_DATA, payload: { hasNextPage: res.data.length !== 0 } });
-      // })
-      // .catch((e) => {
-      //     if(axios.isCancel(e))
-      // return dispactch({ type: ACTIONS.ERROR, payload: { error: e} });
-      // });
+      const cancelToken2 = axios.CancelToken.source()
+      axios
+      .get(baseUrl + "/repos", {
+        cancelToken: cancelToken2.token,  
+        params: {per_page:20, page: page + 1, ...params } })
+      .then((res) => {
+        dispactch({ type: ACTIONS.UPDATE_HAS_NEXT_PAGE, payload: { hasNextPage: res.data.length !== 0 } });
+      })
+      .catch((e) => {
+          if(axios.isCancel(e))
+      return dispactch({ type: ACTIONS.ERROR, payload: { error: e} });
+      });
 
       return () => {cancelToken1.cancel()
-        // cancelToken2.cancel()
+        cancelToken2.cancel()
       }
   }, [params, page]);
 

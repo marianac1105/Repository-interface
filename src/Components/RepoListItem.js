@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Badge, Button, Card, Collapse } from "react-bootstrap";
+import { Badge, Button, Card, Collapse, Navbar } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faEye, faStar } from '@fortawesome/free-solid-svg-icons'
 
@@ -11,7 +11,7 @@ export default function RepoLisItem({repo}) {
       <Card.Body>
         <div className="d-flex justify-content-between">
         <div>
-        <Card.Title>{repo.name} - <span className="text-muted font-weight-light">{repo.language}</span>
+        <Card.Title><Navbar.Brand href={repo.html_url}>{repo.name} - <span className="text-muted font-weight-light">{repo.language}</span></Navbar.Brand>
         </Card.Title>
         <Card.Subtitle className="text-muted mb-2">
           {repo.license? repo.license.name:null}

@@ -15,7 +15,7 @@ const ACTIONS = {
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.MAKE_REQUEST:
-      return { loading: true, repos: [], profileData:{} };
+      return { ...state, loading: true};
      
 
     case ACTIONS.GET_DATA:
@@ -50,43 +50,16 @@ function reducer(state, action) {
 }
 
 
-// // export function FetchProfileData() {
-// //   const [state, dispactch] = useReducer(reducer,{profileData:{}, loading:true})
 
-// //   useEffect(() => {
-// //     const cancelToken1 = axios.CancelToken.source()
-// //     dispactch({ type: ACTIONS.MAKE_REQUEST });
-// //     axios
-// //       .get(baseUrl, {
-// //         cancelToken: cancelToken1.token,  
-// //          })
-// //       .then((res) => {
-// //         dispactch({ type: ACTIONS.GET_DATA_PROFILE, payload: { profileData: res.data } });
-// //       })
-// //       .catch((e) => {
-// //           if(axios.isCancel(e))
-// //       return dispactch({ type: ACTIONS.ERROR, payload: { error: e} });
-// //       });
-
-      
-// //       return () => {cancelToken1.cancel()
-        
-// //       }
-// //   });
-
-//   return state;
-// }
 
 export default function FetchReposData(params, page) {
   const [state, dispactch] = useReducer(reducer,{repos: [],profileData: {}, loading:true})
 
-  useEffect(() => {
-
-
-//  const cancelToken3 = axios.CancelToken.source()
+  useEffect(()=>{
+    const cancelToken3 = axios.CancelToken.source()
     dispactch({ type: ACTIONS.MAKE_REQUEST });
     axios
-      .get(baseUrl)
+      .get(baseUrl,{cancelToken: cancelToken3.token})
       .then((res) => {
         dispactch({ type: ACTIONS.GET_DATA_PROFILE, payload: { profileData: res.data } });
       })
@@ -94,6 +67,19 @@ export default function FetchReposData(params, page) {
           if(axios.isCancel(e))
       return dispactch({ type: ACTIONS.ERROR, payload: { error: e} });
     });
+
+    return () => {
+      cancelToken3.cancel()
+    }
+
+  },[])
+  
+  
+  
+  useEffect(() => {
+
+
+
 
     const cancelToken1 = axios.CancelToken.source()
     dispactch({ type: ACTIONS.MAKE_REQUEST });
@@ -126,7 +112,7 @@ export default function FetchReposData(params, page) {
 
       return () => {cancelToken1.cancel()
         cancelToken2.cancel()
-        // cancelToken3.cancel()
+        
       }
   }, [params, page]);
 

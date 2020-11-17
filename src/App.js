@@ -1,16 +1,18 @@
 import React, {useState} from "react"
-import FetchReposData from "./api/index.js"
+import FetchReposData  from "./api/index.js"
 import {Container} from "react-bootstrap"
 import RepoListItem from "./Components/RepoListItem"
 import ReposPagination from "./Components/ReposPagination"
-import SortForm from "./Components/SortingForm"
+import SortForm from "./Components/SortForm"
+import Profile from "./Components/Profile"
 
 function App() {
 
   const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
 
-  const {repos, loading, error, hasNextPage} = FetchReposData(params, page)
+  const {repos, loading, error, hasNextPage, profileData} = FetchReposData(params, page)
+  
 
   function handleParamChange(e) {
     const param = e.target.name
@@ -23,8 +25,14 @@ function App() {
     
   }
   
+  
   return (
    <Container className="my-4">
+   
+   <Profile
+     profileData ={profileData}
+   />
+   
    <SortForm 
      param = {params}
      onParamChange = {handleParamChange}

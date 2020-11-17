@@ -1,16 +1,16 @@
 import React from 'react'
 import { Form, Col} from "react-bootstrap"
 
-export default function SortingForm({params, onParamChange}) {
+export default function SortForm({params, onParamChange}) {
     return (
-        <Form>
+        <Form className="mt-3">
         <Form.Row className="align-items-end">
   <Form.Group as={Col} controlId="Sorting">
   <Form.Label>Sort by</Form.Label>
     <Form.Control onChange={onParamChange}  name="sort" as="select" custom>
-    <option value="updated">Updated</option>
-    <option value="created">Creation Date</option>
-      <option value="full_name" >Name</option>
+    <option value="updated">Updated time</option>
+    <option value="created">Created time</option>
+      <option value="full_name" >Full Name</option>
       
       
       

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Badge, Button, Card, Collapse, Navbar } from "react-bootstrap";
+import { Badge, Button, Card, Collapse } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faEye, faStar } from '@fortawesome/free-solid-svg-icons'
+import Style from "./RepoListItem.module.css"
 
 export default function RepoLisItem({repo}) {
  
@@ -11,7 +12,7 @@ export default function RepoLisItem({repo}) {
       <Card.Body>
         <div className="d-flex justify-content-between">
         <div>
-        <Card.Title><Navbar.Brand href={repo.html_url}>{repo.name} - <span className="text-muted font-weight-light">{repo.language}</span></Navbar.Brand>
+        <Card.Title><Card.Link href={repo.html_url} className={Style.link} > {repo.name} </Card.Link><span className="text-muted font-weight-light">- {repo.language}</span>
         </Card.Title>
         <Card.Subtitle className="text-muted mb-2">
           {repo.license? repo.license.name:null}
@@ -24,7 +25,7 @@ export default function RepoLisItem({repo}) {
         </Card.Text>
         </div>
         <Card.Text className="text-muted">
-        {repo.fork?"Forked": "Not forked"}
+        {repo.fork?"Forked": null}
         </Card.Text>
         
         </div>

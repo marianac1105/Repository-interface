@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Button, Card, Collapse } from "react-bootstrap";
+import { Badge, Button, Card, Collapse, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faEye, faStar} from '@fortawesome/free-solid-svg-icons'
 import Style from "./RepoListItem.module.css"
 import FetchContributorsApi from "../api/contributorsApi"
+import ContributorsDetails from "./ContributorsDetails"
 
 export default function RepoLisItem({repo}) {
  
@@ -19,7 +20,7 @@ export default function RepoLisItem({repo}) {
       fetchAPI(); }
   }, [repoName]);
 
-  console.log(contributors.data)
+  
 
   return (
     <Card className ="mb-3">
@@ -54,11 +55,20 @@ export default function RepoLisItem({repo}) {
        variant="primary" className="mt-4" >{open?'Hide Top Contributers' :'View Top Contributors'}</Button>
      </Card.Text>
      <Collapse in={open}>
-     <div>
+<div className="mt-3">
+<Row className="my-3">
 {contributors.data? contributors.data.map((contributor) =>{
-  return <p>{contributor.login}</p>
+  return <ContributorsDetails
+    key ={contributor.id}
+    contributor ={contributor}
+  />
 }): "Loading..."}
+</Row>
+
 </div>
+
+
+
 
      
      </Collapse>

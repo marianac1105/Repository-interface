@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Badge, Button, Card, Collapse } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faEye, faStar } from '@fortawesome/free-solid-svg-icons'
+import {  faEye, faStar} from '@fortawesome/free-solid-svg-icons'
 import Style from "./RepoListItem.module.css"
+import FetchContributorsApi from "../api/contributorsApi"
 
 export default function RepoLisItem({repo}) {
  
   const [open, setOpen] = useState(false)
+  const [repoName, setRepoName] = useState("")
+  const [contributors, setContributors] = useState([])
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      setContributors(await FetchContributorsApi(repoName));
+    };
+    if(repoName){
+      fetchAPI(); }
+  }, [repoName]);
+
+  console.log(contributors.data)
+
   return (
     <Card className ="mb-3">
       <Card.Body>
@@ -31,13 +45,22 @@ export default function RepoLisItem({repo}) {
         </div>
      <Card.Text>
        <Button 
-       onClick={() =>setOpen(prevOpen => !prevOpen)}
-       variant="primary" className="mt-4" >{open?'Hide Top Tontributers' :'View Top Contributors'}</Button>
+       value = {repo.name}
+       onClick={(e) => {
+         const {value} = e.target
+        setOpen(prevOpen => !prevOpen)
+        setRepoName(value)
+       }}
+       variant="primary" className="mt-4" >{open?'Hide Top Contributers' :'View Top Contributors'}</Button>
      </Card.Text>
      <Collapse in={open}>
-     <div className="mt-4">
-Contributor
-     </div>
+     <div>
+{contributors.data? contributors.data.map((contributor) =>{
+  return <p>{contributor.login}</p>
+}): "Loading..."}
+</div>
+
+     
      </Collapse>
       </Card.Body>
     </Card>
